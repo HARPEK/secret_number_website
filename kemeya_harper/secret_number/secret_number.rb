@@ -12,7 +12,7 @@ SECRET_NUMBER = rand(1..9)
 # http://localhost:4567/. There should be no need to edit the `get` line.
 get '/' do
   # Using the "erb" method given to you by Sinatra, render the "index" view.
-
+  erb :index
 end
 
 # Below we define another route. The end goal is for a user to be able to put a
@@ -21,6 +21,7 @@ end
 # will be made available to us inside of the `params` hash. There should be no
 # need to edit the `get` line.
 get '/guess/:guess' do
+  @guess = params[:guess].to_i
 
   # Once the user takes a guess, we'll need to take the value out of params and
   # convert it to an integer. Do so below and store it in an instance vaiable
@@ -29,6 +30,17 @@ get '/guess/:guess' do
   # Now that we have the user's guess stored in an instance variable, let's
   # check to see if they guessed the secret number. If they did, render the
   # "winner" erb file.
+  if @guess == SECRET_NUMBER
+    erb :winner
+
+   elsif @guess < SECRET_NUMBER
+     @next_guess = "Try Guessing Higher"
+     erb :loser
+
+   elsif @guess > SECRET_NUMBER
+     @next_guess = "Try Guessing Lower"
+       erb :loser
+   end
 
   # Using the same `if` that you started above, create another case to check if
   # the @guess is less than the secret number, and if so define an instance
